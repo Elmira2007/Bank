@@ -2,8 +2,8 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework import mixins
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
-from apps.users.models import User
-from apps.users.serializers import UserSerializer
+from apps.users.models import User, HistoryTransfer
+from apps.users.serializers import UserSerializer, HistoryTransferSerializer
 from apps.users.permissions import UserPermissions
 
 # Create your views here.
@@ -24,3 +24,14 @@ class UserAPI(GenericViewSet,
     
     def perform_update(self, serializer):
         return serializer.save(user = self.request.user)
+    
+
+class HistoryTransferAPI(GenericViewSet,
+              mixins.ListModelMixin,
+              mixins.RetrieveModelMixin,
+              mixins.CreateModelMixin,
+              mixins.UpdateModelMixin,
+              mixins.DestroyModelMixin):
+    queryset = HistoryTransfer.objects.all()
+    serializer_class = HistoryTransferSerializer  
+    
